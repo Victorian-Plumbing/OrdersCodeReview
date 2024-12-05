@@ -25,6 +25,8 @@ public class OrderUpdater(
 
     public OrderDto UpdateOrder(UpdateOrderRequestDto request)
     {
+        //What is the order doesn't exist?
+        //Can do a GET here to check existsance, throw a 404 if not found
         var order = _orderRepo.Get(x => x.OrderNumber == request.OrderNumber)
                               .Include(x => x.OrderItems)
                                 .ThenInclude(x => x.Variant)
@@ -49,7 +51,9 @@ public class OrderUpdater(
                                            item
                                        })
                                  .ToDictionary(x => x.variant, x => x.item.Quantity);
-
+        //The null! op here hasn't been checked
+        //Since this is coming from a PUT command, it should do a full update of order items. Currently, it adds to a collection.
+        //An existing order with 2 items, with an update command of 3 items will end up with 5 items. Should be changed to a PATCH command
         order!.UpdateItems(orderItems);
         order.UpdateShippingAddress(request.ShippingAddress.AddressLineOne,
                                     request.ShippingAddress.AddressLineTwo!,
@@ -69,7 +73,7 @@ public class OrderUpdater(
         return new OrderDtoMapper().Map(order);
     } 
 }
-
+//Put this into it's own class ideally. It's not internal to the updater.
 public class OrderReader(
     IRepository<Order> orderRepo,
     IUnitOfWork unitOfWork)
@@ -80,6 +84,8 @@ public class OrderReader(
 
     public OrderDto ReadOrder(string orderNumber)
     {
+        //This method is only ever used to read information from the dB (no writes)
+        //Use the AsNoTracking to improve performance and not have to track model binding
         var order = _orderRepo.Get(x => x.OrderNumber == orderNumber)
                               .Include(x => x.OrderItems)
                                 .ThenInclude(x => x.Variant)
@@ -87,11 +93,10 @@ public class OrderReader(
                               .Include(x => x.Customer)
                               .Include(x => x.ShippingAddress)
                               .Include(x => x.BillingAddress)
-                              .SingleOrDefault()
-            ;
+                              .SingleOrDefault();
 
         _unitOfWork.Save();
-
+        //Want to check if the order is null before doing any data mapping
         return new OrderDtoMapper().Map(order);
     }
 }

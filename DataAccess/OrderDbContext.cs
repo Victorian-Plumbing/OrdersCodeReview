@@ -103,7 +103,7 @@ public class OrderDbContext : DbContext
                                              .IsRequired()
                                              .HasMaxLength(50)
                                              .IsUnicode(false);
-
+                                       //Might want to have a currency column as well for international support
                                        entity.Property(e => e.TotalPrice)
                                              .IsRequired()
                                              .HasColumnType("money");
@@ -162,20 +162,28 @@ public class OrderDbContext : DbContext
                                                      .IsRequired()
                                                      .HasColumnType("datetime");
 
+                                               //This is generated as a GUID by default. Preserve as guid if there isn't a reason to be flexible
                                                entity.Property(e => e.MessageId)
                                                      .IsRequired()
                                                      .HasMaxLength(50)
                                                      .IsUnicode(false);
 
+                                               //You could have a check constraint on the column to see if the payload passed is valid JSON
+                                               //Probably more hassle than it's worth doing this at the data-layer, compared to being defensive on the application side
                                                entity.Property(e => e.Payload)
                                                      .IsRequired()
                                                      .IsUnicode(false);
+                                               //entity.ToTable(t => t.HasCheckConstraint("CHK_OutboxMessage_Payload_ValidJSON", "ISJSON(payload) = 1"));
                                            });
+
+        
 
         modelBuilder.Entity<Product>(entity =>
                                      {
                                          entity.ToTable("Products");
 
+                                         //This might need to be changed / re-seeded in the future, depending on the size of the product catalog.
+                                         //The value can rollover to a negative (is signed by default), so can cause issues if domain logic is expecting incremental data
                                          entity.HasKey(e => e.ProductId);
 
                                          entity.Property(e => e.ProductId)

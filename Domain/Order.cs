@@ -70,7 +70,7 @@ public class Order
 
         foreach(var item in orderedItems)
             OrderItems.Add(item);
-
+        //This can be set on the getter for the TotalPrice instead, don't need to remember to calculate each time you add Items, reduce computation.
         TotalPrice = orderItems.Select(x => x.Key.Price * x.Value).Sum();
     }
 

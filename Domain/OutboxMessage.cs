@@ -12,7 +12,6 @@ public class OutboxMessage
         RetryCount = 0;
         Payload = payloadJson;
     }
-
     public int OutboxMessageId { get; private set; }
     public string MessageId { get; private set; }
     public DateTime Created { get; private set; }

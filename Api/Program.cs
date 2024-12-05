@@ -21,6 +21,9 @@ public class Program
         var builder = WebApplication.CreateBuilder(args);
 
         // Add services to the container.
+
+        //Consider extracting all the creator / updater / providers into their own wrapped extension methods.
+        //These can then be mocked and tested later on
         builder.Services
                .AddScoped<IOrderReader, OrderReader>()
                .AddScoped<IOrderCreator, OrderCreator>()
@@ -83,6 +86,8 @@ public class Program
         app.Run();
     }
 
+    //Consider moving to the data access project and abstracting. Can then swap out with other implementations,
+    //and not have the "top-level" project have a sqlite depedency
     private static DbConnection CreateInMemoryDatabase()
     {
         var connection = new SqliteConnection("DataSource=file:example.sqlite");

@@ -18,6 +18,8 @@ public class Address
         LineThree = lineThree;
         PostCode = postCode;
         Created = DateTime.UtcNow;
+
+        //For the collections, consider adding defaulted values either from the constructor or on the property directly
     }
 
     public int AddressId { get; private set; }

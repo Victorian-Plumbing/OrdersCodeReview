@@ -5,6 +5,9 @@ namespace Application.Orders.Mappers;
 
 public class OrderDtoMapper : IOrderDtoMapper
 {
+    //For future extensions, consider having mapping processes for all the given entities here (address, order item etc).
+    //This can then reduce the complexity of this mapper
+
     public OrderDto Map(Order order)
     {
         return new OrderDto
@@ -37,9 +40,12 @@ public class OrderDtoMapper : IOrderDtoMapper
                 ImageUrl = x.Variant.Product.ImageUrl,
                 Quantity = x.Quantity,
                 UnitPrice = x.Variant.Price,
-                TotalPrice = x.Variant.Price * x.Quantity
+                TotalPrice = x.Variant.Price * x.Quantity // The value here doesn't preserve a pence value.
+                                                          // Ie "£12.30" would be "12.3". Might be important depending on presentation
+                                                          // Ideally, whatever client / consumer would handle the presentation
 
             }).ToList(),
+            //Since ICollection can be an array or a list, and the client can't infer the underlying type, pass as an array to reduce overhead
         };
     }
 }
