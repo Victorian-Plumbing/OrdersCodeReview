@@ -24,8 +24,8 @@ public class AddressProvider(IRepository<Address> addressRepo,
                                                               shippingAddressDto.PostCode);
 
         var lookupHashes = new Guid[] { billingAddressHash, shippingAddressHash };
-        //This seems like a poor way of checking for addres information in the dB. 
-        //If address records are being stored individually (as addresses, and not split by billing and shipping), look them up independantly
+        //This seems like a poor way of checking for address information in the dB. 
+        //If address records are being stored individually (as addresses, and not split by billing and shipping), look them up independently
         //This will allow for more performant lookups
         //You can also check programatically if the addresses are the same and reduce data lookups (arguable if this is beneficial)
         var addresses = addressRepo.Get(x => lookupHashes.Contains(x.Hash));

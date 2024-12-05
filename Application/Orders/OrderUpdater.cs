@@ -26,7 +26,7 @@ public class OrderUpdater(
     public OrderDto UpdateOrder(UpdateOrderRequestDto request)
     {
         //What is the order doesn't exist?
-        //Can do a GET here to check existsance, throw a 404 if not found
+        //Can do a GET here to check existence, throw a 404 if not found
         var order = _orderRepo.Get(x => x.OrderNumber == request.OrderNumber)
                               .Include(x => x.OrderItems)
                                 .ThenInclude(x => x.Variant)
