@@ -30,7 +30,7 @@ public class OrdersController : ControllerBase
     //For exceptions, you can annotate your methods with XML comments, with information about expected exceptions.
 
     //For the data binding here, I'd err on the side of using FromRoute to follow REST standards, which would use the GET as part of the Path / URI
-    //For example, victoriaplumbing.test.com/orders/1234 , where 1234 is your order number
+    //For example, victorianplumbing.test.com/orders/1234 , where 1234 is your order number
 
     //For the input parameter, I would still try and wrap this in an object, even if it only has a single property
     //(which you can use attribute annotation for FromQuery / FromRoute)

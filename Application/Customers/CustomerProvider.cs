@@ -20,7 +20,7 @@ public class CustomerProvider(IRepository<Customer> customerRepo,
             return customer;
 
         //It could be argued that this method shouldn't create customer information. 
-        //Try to uphold SRP. Might be worht returning back a null Customer (change response type to nullable), and allow the calling code to call this. 
+        //Try to uphold SRP. Might be worth returning back a null Customer (change response type to nullable), and allow the calling code to call this. 
         //Can also call to the shared outbox service in the case the caller knows the customer has been created. 
         //Might be a candidate for pushing to a seperate customer api / micro-service which handles this processing
         customer = new Customer(request.EmailAddress,
