@@ -1,6 +1,6 @@
 # Entity-Relationship Diagram (ERD)
 
-This markdown file contains a representation of the Entity Framework model as an ER diagram using Mermaid syntax. The diagram illustrates the entities and the relationships between them.
+This markdown file contains a representation of the Entity Framework model as an ER diagram using Mermaid syntax. The diagram illustrates the entities and the relationships between them.  These are the same as the database tables.
 
 You can see these relationships in the domain entities.  If you are unfamiliar with Entity Framework then please lookup navigation properties to help you understand this.
 
