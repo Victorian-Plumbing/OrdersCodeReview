@@ -7,4 +7,6 @@ public interface IAddressProvider
 {
     Tuple<Address, Address> GetAddresses(AddressDto billingAddressDto,
                                          AddressDto shippingAddressDto);
+
+    Address GetAddress(AddressDto addressDto);
 }

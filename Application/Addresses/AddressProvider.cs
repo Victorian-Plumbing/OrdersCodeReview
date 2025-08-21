@@ -42,6 +42,24 @@ public class AddressProvider(IRepository<Address> addressRepo,
         return new Tuple<Address, Address>(billingAddress, shippingAddress);
     }
 
+    public Address GetAddress(AddressDto addressDto)
+    {
+        var addressHash = Address.GenerateAddressHash(addressDto.AddressLineOne,
+                                                      addressDto.AddressLineTwo!,
+                                                      addressDto.AddressLineThree!,
+                                                      addressDto.PostCode);
+
+        var address = addressRepo.Get(x => x.Hash == addressHash).SingleOrDefault();
+
+        if (address is not null)
+            return address;
+
+        return CreateAddress(addressDto.AddressLineOne,
+                             addressDto.AddressLineTwo!,
+                             addressDto.AddressLineThree!,
+                             addressDto.PostCode);
+    }
+
     private Address CreateAddress(string lineOne,
                                   string lineTwo,
                                   string lineThree,
